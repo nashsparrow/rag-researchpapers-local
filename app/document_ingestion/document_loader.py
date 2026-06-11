@@ -25,7 +25,7 @@ out.close()
 import os
 import pymupdf
 import uuid
-from app.helpers.data_classes import JSONFileData
+from app.helpers.data_classes import JSONFileData, JSONPageData
 
 
 class PDFExporter:
@@ -34,35 +34,33 @@ class PDFExporter:
         self.txt_path = text_path
         # Create output directory if it doesn't exist
         os.makedirs(os.path.dirname(self.txt_path), exist_ok=True)
-        self.json = []
 
     def export_all_pdfs(self, pdf_dir):
         import os
 
+        self.json = []  # Clear previous JSON data
         for filename in os.listdir(pdf_dir):
             if filename.endswith(".pdf"):
                 self.pdf_path = os.path.join(pdf_dir, filename)
-                self.export_text(self.pdf_path)
+                self.export_text_to_json_list(self.pdf_path, filename)
+        
+        return self.json
 
-    def export_text(self, pdf_path):
-
+    def export_text_to_json_list(self, pdf_path, filename):
         self.pdf_path = pdf_path
         self.validate()
 
         file_id = str(uuid.uuid4())
         self.txt_path += f"{file_id}.txt"
 
-        json = JSONFileData(file_id=file_id, filename=f"{file_id}.txt", pagenumber=None, text=None)
-
+        json = JSONFileData(file_id=file_id, filename=filename, pages=[])
         doc = pymupdf.open(self.pdf_path)  
-        with open(self.txt_path, "w") as out:  
-            for page in doc:
-                text = page.get_text()
-                out.write(text)
-                out.write("\n")
+        for page in doc:
+            page_data = JSONPageData(pagenumber=page.number, text=page.get_text())
+            json.pages.append(page_data)
 
-        file_size = os.path.getsize(self.txt_path)
-        return (file_id, f"{file_id}.txt", self.txt_path, file_size)
+        print(json)
+        json.save(self.txt_path + f"{file_id}.json")
 
     def validate(self):
         if not os.path.exists(self.pdf_path):
@@ -86,6 +84,6 @@ class PDFExporter:
             raise ValueError(f"PDF file is too large: {self.pdf_path}. Maximum allowed size is 100MB.")
         
 
-#exporter = PDFExporter("../assets/output/")
-#a = exporter.export_text("../assets/pdf/sample1.pdf")
+exporter = PDFExporter("data/processed/")
+a = exporter.export_all_pdfs("data/pdf/")
 #print(a)
