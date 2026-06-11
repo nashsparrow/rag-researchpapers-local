@@ -25,7 +25,8 @@ out.close()
 import os
 import pymupdf
 import uuid
-from app.helpers.data_classes import JSONFileData, JSONPageData
+from app.document_chunking.chunking import chunk_document
+from app.helpers.data_classes import ChunkedJSONFileData, JSONChunkData, JSONFileData, JSONPageData
 from app.helpers.text_cleanup import clean_text
 
 
@@ -54,11 +55,21 @@ class PDFExporter:
         file_id = str(uuid.uuid4())
         self.txt_path += f"{file_id}.txt"
 
-        json = JSONFileData(file_id=file_id, filename=filename, pages=[])
+        json = ChunkedJSONFileData(file_id=file_id, filename=filename, chunks=[])
         doc = pymupdf.open(self.pdf_path)  
         for page in doc:
-            page_data = JSONPageData(pagenumber=page.number, text=clean_text(page.get_text()))
-            json.pages.append(page_data)
+            text = page.get_text()
+            cleaned_text = clean_text(text)
+            chunked_data = chunk_document(cleaned_text, chunk_size=1000)  # Example chunk size
+            for i, chunk in enumerate(chunked_data):
+                chunk_data = JSONChunkData(
+                    chunkid=str(uuid.uuid4()),
+                    chunk_index=i,
+                    pagenumber=page.number + 1,
+                    text=chunk,
+                    char_count=len(chunk)
+                )
+                json.chunks.append(chunk_data)
 
         print(json)
         json.save(self.txt_path + f"{file_id}.json")
