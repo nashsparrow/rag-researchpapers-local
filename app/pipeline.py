@@ -2,7 +2,7 @@ import os
 import uuid
 
 from app.document_chunking.chunking import chunk_document
-from app.document_embedding.embedding import create_embeddings
+from app.document_embedding.embedding import create_embeddings, get_index, save_index
 from app.document_ingestion.document_loader import load_pdf_to_document
 from app.helpers.data_classes import FlattenedChunkedJSONFileData
 from app.helpers.data_classes import FlattenedChunkedJSONFileData
@@ -16,6 +16,7 @@ def execute_pipeline(pdf_path: str, txt_path: str):
 
     print("Starting the document processing pipeline...")
     json_array = []
+    index = get_index()
     # Validate and Load the document
     for filename in os.listdir(pdf_path):
             if filename.endswith(".pdf"):
@@ -44,12 +45,16 @@ def execute_pipeline(pdf_path: str, txt_path: str):
                         json_array.append(flattened_chunk)
                         #Embeddings for each chunk
 
-                        embeddings = create_embeddings(chunk) 
+                        embeddings = create_embeddings(chunk)
+                        index.add(embeddings)
 
                     # This is where you would typically generate embeddings for each chunk
                     #print(json_array)
                     save_json([chunk.to_dict() for chunk in json_array], txt_path + f"{file_id}.json")
+
                     print(f"Finished processing file: {filename}")
+
+            save_index(index, os.path.join(txt_path, "document_embeddings.index"))
 
 
 execute_pipeline(pdf_path=PDF_DATA_PATH, txt_path=PROCESSED_DATA_PATH)
