@@ -29,6 +29,7 @@ import uuid
 from app.document_chunking.chunking import chunk_document
 from app.helpers.data_classes import ChunkedJSONFileData, FlattenedChunkedJSONFileData, JSONChunkData, JSONFileData, JSONPageData
 from app.helpers.text_cleanup import clean_text
+from config import CHUNK_SIZE
 
 
 class PDFExporter:
@@ -54,14 +55,13 @@ class PDFExporter:
         self.validate()
 
         file_id = str(uuid.uuid4())
-        self.txt_path += f"{file_id}.txt"
 
         doc = pymupdf.open(self.pdf_path)  
         json_array = []
         for page in doc:
             text = page.get_text()
             cleaned_text = clean_text(text)
-            chunked_data = chunk_document(cleaned_text, chunk_size=1000)  # Example chunk size
+            chunked_data = chunk_document(cleaned_text, chunk_size=CHUNK_SIZE)  # Example chunk size
             for i, chunk in enumerate(chunked_data):
                 flattened_chunk = FlattenedChunkedJSONFileData(
                     file_id=file_id,
