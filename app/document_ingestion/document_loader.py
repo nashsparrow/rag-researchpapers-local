@@ -26,6 +26,7 @@ import os
 import pymupdf
 import uuid
 from app.helpers.data_classes import JSONFileData, JSONPageData
+from app.helpers.text_cleanup import clean_text
 
 
 class PDFExporter:
@@ -56,7 +57,7 @@ class PDFExporter:
         json = JSONFileData(file_id=file_id, filename=filename, pages=[])
         doc = pymupdf.open(self.pdf_path)  
         for page in doc:
-            page_data = JSONPageData(pagenumber=page.number, text=page.get_text())
+            page_data = JSONPageData(pagenumber=page.number, text=clean_text(page.get_text()))
             json.pages.append(page_data)
 
         print(json)
