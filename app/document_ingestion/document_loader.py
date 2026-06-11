@@ -22,11 +22,12 @@ out.close()
 '''
 
 
+import json
 import os
 import pymupdf
 import uuid
 from app.document_chunking.chunking import chunk_document
-from app.helpers.data_classes import ChunkedJSONFileData, JSONChunkData, JSONFileData, JSONPageData
+from app.helpers.data_classes import ChunkedJSONFileData, FlattenedChunkedJSONFileData, JSONChunkData, JSONFileData, JSONPageData
 from app.helpers.text_cleanup import clean_text
 
 
@@ -40,7 +41,7 @@ class PDFExporter:
     def export_all_pdfs(self, pdf_dir):
         import os
 
-        self.json = []  # Clear previous JSON data
+        self.json = []
         for filename in os.listdir(pdf_dir):
             if filename.endswith(".pdf"):
                 self.pdf_path = os.path.join(pdf_dir, filename)
@@ -55,24 +56,26 @@ class PDFExporter:
         file_id = str(uuid.uuid4())
         self.txt_path += f"{file_id}.txt"
 
-        json = ChunkedJSONFileData(file_id=file_id, filename=filename, chunks=[])
         doc = pymupdf.open(self.pdf_path)  
+        json_array = []
         for page in doc:
             text = page.get_text()
             cleaned_text = clean_text(text)
             chunked_data = chunk_document(cleaned_text, chunk_size=1000)  # Example chunk size
             for i, chunk in enumerate(chunked_data):
-                chunk_data = JSONChunkData(
-                    chunkid=str(uuid.uuid4()),
+                flattened_chunk = FlattenedChunkedJSONFileData(
+                    file_id=file_id,
+                    filename=filename,
+                    chunk_id=str(uuid.uuid4()),
                     chunk_index=i,
-                    pagenumber=page.number + 1,
+                    page_number=page.number + 1,
                     text=chunk,
                     char_count=len(chunk)
                 )
-                json.chunks.append(chunk_data)
+                json_array.append(flattened_chunk)
 
-        print(json)
-        json.save(self.txt_path + f"{file_id}.json")
+            print(json_array)
+            self.save_json([chunk.to_dict() for chunk in json_array], self.txt_path + f"{file_id}.json")
 
     def validate(self):
         if not os.path.exists(self.pdf_path):
@@ -94,7 +97,10 @@ class PDFExporter:
         # validate not too large (e.g., 100MB)
         if os.path.getsize(self.pdf_path) > 100 * 1024 * 1024:
             raise ValueError(f"PDF file is too large: {self.pdf_path}. Maximum allowed size is 100MB.")
-        
+
+    def save_json(self, json_data, path):
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(json_data, f, indent=4, ensure_ascii=False)   
 
 exporter = PDFExporter("data/processed/")
 a = exporter.export_all_pdfs("data/pdf/")
