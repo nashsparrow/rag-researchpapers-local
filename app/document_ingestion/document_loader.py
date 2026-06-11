@@ -1,0 +1,91 @@
+#load the pdf
+#extract the text from the pdf
+
+#options - PyMuPDF, PDFPlumber, PyPDF2
+#used PyMuPDF - https://pymupdf.readthedocs.io/en/latest/
+
+#Task: Create a document loader that can load a PDF file and extract its text content.
+
+'''
+import pymupdf
+
+doc = pymupdf.open("../assets/pdf/sample1.pdf")  
+out = open("../assets/pdf/sample1.txt", "w")  
+
+for page in doc:
+    text = page.get_text()
+    out.write(text)
+    out.write("\n")  # Add a newline after each page
+
+
+out.close()
+'''
+
+
+import os
+import pymupdf
+import uuid
+from app.helpers.data_classes import JSONFileData
+
+
+class PDFExporter:
+
+    def __init__(self, text_path):
+        self.txt_path = text_path
+        # Create output directory if it doesn't exist
+        os.makedirs(os.path.dirname(self.txt_path), exist_ok=True)
+        self.json = []
+
+    def export_all_pdfs(self, pdf_dir):
+        import os
+
+        for filename in os.listdir(pdf_dir):
+            if filename.endswith(".pdf"):
+                self.pdf_path = os.path.join(pdf_dir, filename)
+                self.export_text(self.pdf_path)
+
+    def export_text(self, pdf_path):
+
+        self.pdf_path = pdf_path
+        self.validate()
+
+        file_id = str(uuid.uuid4())
+        self.txt_path += f"{file_id}.txt"
+
+        json = JSONFileData(file_id=file_id, filename=f"{file_id}.txt", pagenumber=None, text=None)
+
+        doc = pymupdf.open(self.pdf_path)  
+        with open(self.txt_path, "w") as out:  
+            for page in doc:
+                text = page.get_text()
+                out.write(text)
+                out.write("\n")
+
+        file_size = os.path.getsize(self.txt_path)
+        return (file_id, f"{file_id}.txt", self.txt_path, file_size)
+
+    def validate(self):
+        if not os.path.exists(self.pdf_path):
+            raise FileNotFoundError(f"PDF file not found: {self.pdf_path}")
+        if not self.pdf_path.lower().endswith('.pdf'):
+            raise ValueError(f"Invalid file type: {self.pdf_path}. Expected a PDF file.")
+        
+        # validate not empty
+        if os.path.getsize(self.pdf_path) == 0:
+            raise ValueError(f"PDF file is empty: {self.pdf_path}")
+        
+        # validate readable
+        try:
+            with open(self.pdf_path, 'rb') as f:
+                f.read(1)
+        except Exception as e:
+            raise ValueError(f"PDF file is not readable: {self.pdf_path}. Error: {str(e)}")
+        
+        # validate not too large (e.g., 100MB)
+        if os.path.getsize(self.pdf_path) > 100 * 1024 * 1024:
+            raise ValueError(f"PDF file is too large: {self.pdf_path}. Maximum allowed size is 100MB.")
+        
+
+#exporter = PDFExporter("../assets/output/")
+#a = exporter.export_text("../assets/pdf/sample1.pdf")
+#print(a)
