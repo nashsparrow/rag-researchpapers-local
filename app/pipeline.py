@@ -4,6 +4,7 @@ import uuid
 from app.document_chunking.chunking import chunk_document
 from app.document_embedding.embedding import create_embeddings, get_index, save_index
 from app.document_ingestion.document_loader import load_pdf_to_document
+from app.document_retrieval.document_retrieval import load_model, retrieve_relevant_chunks
 from app.helpers.data_classes import FlattenedChunkedJSONFileData
 from app.helpers.data_classes import FlattenedChunkedJSONFileData
 from app.helpers.helpers import save_json
@@ -12,7 +13,7 @@ from config import CHUNK_SIZE, PDF_DATA_PATH, PROCESSED_DATA_PATH
 
 
 
-def execute_pipeline(pdf_path: str, txt_path: str):
+def execute_indexing_pipeline(pdf_path: str, txt_path: str):
 
     print("Starting the document processing pipeline...")
     json_array = []
@@ -48,13 +49,28 @@ def execute_pipeline(pdf_path: str, txt_path: str):
                         embeddings = create_embeddings(chunk)
                         index.add(embeddings)
 
-                    # This is where you would typically generate embeddings for each chunk
-                    #print(json_array)
-                    save_json([chunk.to_dict() for chunk in json_array], txt_path + f"{file_id}.json")
-
-                    print(f"Finished processing file: {filename}")
-
-            save_index(index, os.path.join(txt_path, "document_embeddings.index"))
+                print(f"Finished processing file: {filename}")
 
 
-execute_pipeline(pdf_path=PDF_DATA_PATH, txt_path=PROCESSED_DATA_PATH)
+    save_json([chunk.to_dict() for chunk in json_array], txt_path + "chunked_data.json")         
+    save_index(index, os.path.join(txt_path, "document_embeddings.index"))
+
+
+def execute_query_pipeline(query: str, top_k=5):
+    model, index, chunks = load_model()
+
+    while True:
+        question = input("Enter your question (or 'exit' to quit): ")
+
+        if question.lower() == 'exit':
+            break
+
+        relevant_chunks = retrieve_relevant_chunks(question, model, index, chunks, top_k)
+        print (relevant_chunks)
+
+
+## when indexing pipeline is executed.
+# ##execute_indexing_pipeline(pdf_path=PDF_DATA_PATH, txt_path=PROCESSED_DATA_PATH)
+
+## to query the indexed data
+print (execute_query_pipeline("Who is the author of Application of Machine Learning in Compiler Optimization?"))
