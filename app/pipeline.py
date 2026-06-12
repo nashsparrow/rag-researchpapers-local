@@ -10,6 +10,7 @@ from app.helpers.data_classes import FlattenedChunkedJSONFileData
 from app.helpers.data_classes import FlattenedChunkedJSONFileData
 from app.helpers.helpers import save_json
 from app.helpers.text_cleanup import clean_text
+from app.llm_integration.llm_integration import send_query_to_llm
 from config import CHUNK_SIZE, PDF_DATA_PATH, PROCESSED_DATA_PATH
 
 
@@ -57,7 +58,7 @@ def execute_indexing_pipeline(pdf_path: str, txt_path: str):
     save_index(index, os.path.join(txt_path, "document_embeddings.index"))
 
 
-def execute_query_pipeline(query: str, top_k=5):
+def execute_query_pipeline(top_k=3):
     model, index, chunks = load_model()
 
     while True:
@@ -69,12 +70,15 @@ def execute_query_pipeline(query: str, top_k=5):
         relevant_chunks = retrieve_relevant_chunks(question, model, index, chunks, top_k)
         
         context_and_sources = create_context(relevant_chunks)
-        print("Context:\n", context_and_sources["context"])
-        print("Sources:\n", context_and_sources["sources"])
+        # print("Context:\n", context_and_sources["context"])
+        # print("Sources:\n", context_and_sources["sources"])
 
+        response = send_query_to_llm(question, context_and_sources["context"])
+
+        print("LLM Response:\n", response.message.content) 
 
 ## when indexing pipeline is executed.
 # ##execute_indexing_pipeline(pdf_path=PDF_DATA_PATH, txt_path=PROCESSED_DATA_PATH)
 
 ## to query the indexed data
-print (execute_query_pipeline("Who is the author of Application of Machine Learning in Compiler Optimization?"))
+print (execute_query_pipeline())
