@@ -1,6 +1,7 @@
 import os
 import uuid
 
+from app.context_creator.context_creator import create_context
 from app.document_chunking.chunking import chunk_document
 from app.document_embedding.embedding import create_embeddings, get_index, save_index
 from app.document_ingestion.document_loader import load_pdf_to_document
@@ -66,7 +67,10 @@ def execute_query_pipeline(query: str, top_k=5):
             break
 
         relevant_chunks = retrieve_relevant_chunks(question, model, index, chunks, top_k)
-        print (relevant_chunks)
+        
+        context_and_sources = create_context(relevant_chunks)
+        print("Context:\n", context_and_sources["context"])
+        print("Sources:\n", context_and_sources["sources"])
 
 
 ## when indexing pipeline is executed.

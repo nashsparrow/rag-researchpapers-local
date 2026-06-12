@@ -4,16 +4,23 @@ import faiss
 import numpy as np
 from config import MODEL_NAME, NORMALIZE_EMBEDDINGS
 
-
+# Prefer PyTorch-only transformers and disable TensorFlow when using sentence-transformers.
 os.environ.setdefault("USE_TF", "0")
+os.environ.setdefault("TRANSFORMERS_NO_TF", "1")
 
-from sentence_transformers import SentenceTransformer
+_model = None
 
-# Load the model once at module import to avoid reloading on every call.
-_model = SentenceTransformer(MODEL_NAME)
+
+def _get_sentence_transformer_model():
+    global _model
+    if _model is None:
+        from sentence_transformers import SentenceTransformer
+        _model = SentenceTransformer(MODEL_NAME)
+    return _model
 
 
 def create_embeddings(input_text):
+    model = _get_sentence_transformer_model()
     # Accept a single string or a list of strings and return a 2D numpy array
     if isinstance(input_text, str):
         texts = [input_text]
