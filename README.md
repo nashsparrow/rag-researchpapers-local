@@ -11,6 +11,12 @@ Implemented the full pipeline manually: PDF parsing, chunking, embedding generat
 - Ollama with the `llama3.2` model
 - Python packages: `pymupdf`, `sentence-transformers`, `faiss-cpu`, `ollama`, and `ftfy`
 
+Install the Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
 Start Ollama and download the model before running answer tests or asking questions:
 
 ```bash
@@ -75,7 +81,7 @@ rag-researchpapers-local/
 │   │   └── context_creator.py
 │   ├── llm_integration/             # Talks to the AI model
 │   │   └── llm_integration.py
-│   └── pipeline.py                  # Main orchestration
+│   └── pipelines.py                  # Main orchestration
 ├── data/
 │   ├── pdf/                         # Put your PDFs here
 │   └── processed/                   # Generated indexes and embeddings

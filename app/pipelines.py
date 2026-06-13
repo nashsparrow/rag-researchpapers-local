@@ -7,11 +7,10 @@ from app.document_embedding.embedding import create_embeddings, get_index, save_
 from app.document_ingestion.document_loader import load_pdf_to_document
 from app.document_retrieval.document_retrieval import load_model, retrieve_relevant_chunks
 from app.helpers.data_classes import FlattenedChunkedJSONFileData
-from app.helpers.data_classes import FlattenedChunkedJSONFileData
 from app.helpers.helpers import save_json
 from app.helpers.text_cleanup import clean_text
 from app.llm_integration.llm_integration import send_query_to_llm
-from app.testing_accuracy.rag_testing import test_answer_accuracy, test_answer_accuracy, test_retrieval_accuracy
+from app.testing_accuracy.rag_testing import test_answer_accuracy, test_retrieval_accuracy
 from config import CHUNK_SIZE, PDF_DATA_PATH, PROCESSED_DATA_PATH
 
 

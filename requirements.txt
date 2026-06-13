@@ -1,0 +1,7 @@
+faiss-cpu
+ftfy
+numpy
+ollama
+pymupdf
+sentence-transformers
+spacy

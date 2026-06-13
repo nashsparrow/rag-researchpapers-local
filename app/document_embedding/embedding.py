@@ -1,7 +1,8 @@
-import json
 import os
+
 import faiss
 import numpy as np
+
 from config import MODEL_NAME, NORMALIZE_EMBEDDINGS
 
 # Prefer PyTorch-only transformers and disable TensorFlow when using sentence-transformers.
@@ -15,6 +16,7 @@ def _get_sentence_transformer_model():
     global _model
     if _model is None:
         from sentence_transformers import SentenceTransformer
+
         _model = SentenceTransformer(MODEL_NAME)
     return _model
 
@@ -27,7 +29,7 @@ def create_embeddings(input_text):
     else:
         texts = list(input_text)
 
-    embeddings = _model.encode(texts, normalize_embeddings=NORMALIZE_EMBEDDINGS)
+    embeddings = model.encode(texts, normalize_embeddings=NORMALIZE_EMBEDDINGS)
     embeddings = np.asarray(embeddings)
 
     # Ensure embeddings are 2D: (n, d). For a single input this will be (1, d).
@@ -38,12 +40,15 @@ def create_embeddings(input_text):
 
 
 def get_embedding_dimension():
-    return _model.get_sentence_embedding_dimension()
+    model = _get_sentence_transformer_model()
+    return model.get_sentence_embedding_dimension()
+
 
 def get_index():
     dimension = get_embedding_dimension()
     index = faiss.IndexFlatIP(dimension)
     return index
+
 
 def save_index(index, file_path):
     faiss.write_index(index, file_path)
