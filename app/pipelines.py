@@ -11,6 +11,7 @@ from app.helpers.data_classes import FlattenedChunkedJSONFileData
 from app.helpers.helpers import save_json
 from app.helpers.text_cleanup import clean_text
 from app.llm_integration.llm_integration import send_query_to_llm
+from app.testing_accuracy.rag_testing import test_answer_accuracy, test_answer_accuracy, test_retrieval_accuracy
 from config import CHUNK_SIZE, PDF_DATA_PATH, PROCESSED_DATA_PATH
 
 
@@ -75,10 +76,26 @@ def execute_query_pipeline(top_k=3):
 
         response = send_query_to_llm(question, context_and_sources["context"])
 
-        print("LLM Response:\n", response.message.content) 
+        print("LLM Response:\n", response.message.content)
+
+def execute_test_pipeline():
+     # should run after the indexing pipeline is executed.
+     model, index, chunks = load_model()
+
+     print("Running Retrieval Tests..")
+     test_retrieval_accuracy(model, index, chunks)
+     print("Retrieval Tests completed.")
+
+     print("Running Answer Accuray Tests..")
+     test_answer_accuracy(model, index, chunks)
+     print("Answer Accuray Tests completed.")
+
+
+
 
 ## when indexing pipeline is executed.
 # ##execute_indexing_pipeline(pdf_path=PDF_DATA_PATH, txt_path=PROCESSED_DATA_PATH)
 
 ## to query the indexed data
-print (execute_query_pipeline())
+execute_test_pipeline()
+#print (execute_query_pipeline())

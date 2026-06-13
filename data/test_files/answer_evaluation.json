@@ -1,0 +1,496 @@
+{
+  "dataset_name": "compiler_rag_answer_accuracy_eval",
+  "description": "Reference answers and grading criteria for answer quality. Use retrieved context from the RAG system, then compare the generated answer against these references.",
+  "grading_scale": {
+    "answer_correct": "0 or 1",
+    "grounded": "0 or 1; answer must be supported by retrieved chunks",
+    "citation_correct": "0 or 1; cited sources should overlap expected_sources",
+    "hallucination": "yes/no; yes if answer introduces unsupported claims"
+  },
+  "questions": [
+    {
+      "id": "ANS-001",
+      "question": "What is DQN?",
+      "reference_answer": "DQN, or Deep Q-Network, combines Q-learning with deep neural networks. Instead of storing all Q-values in a Q-table, a neural network approximates the Q-function for state-action pairs, which helps in environments with large state spaces.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            3
+          ]
+        },
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            20,
+            38
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "Deep Q",
+        "Q-learning",
+        "neural network",
+        "Q-table",
+        "Q-function"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-002",
+      "question": "What is the phase ordering problem?",
+      "reference_answer": "The phase ordering problem is the task of selecting and ordering compiler optimization passes so that a program improves according to an objective such as execution time, code size, or power consumption.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            1,
+            2
+          ]
+        },
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            8,
+            19
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "phase ordering",
+        "optimization passes",
+        "sequence",
+        "compiler optimization"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-003",
+      "question": "Which benchmarks were used in POSET-RL?",
+      "reference_answer": "POSET-RL evaluates results on x86 and AArch64 using benchmark suites including SPEC CPU 2006, SPEC CPU 2017, and MiBench.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            1,
+            2,
+            7,
+            8
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "SPEC",
+        "MiBench",
+        "SPEC CPU 2006",
+        "SPEC CPU 2017",
+        "x86"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-004",
+      "question": "How does POSET-RL use IR2Vec?",
+      "reference_answer": "POSET-RL uses IR2Vec to represent LLVM IR programs as embeddings. These embeddings form the RL state or observation representation consumed by the agent.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            20
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "IR2Vec",
+        "representations",
+        "embeddings",
+        "state",
+        "LLVM IR"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-005",
+      "question": "How is the reward function defined in POSET-RL?",
+      "reference_answer": "The POSET-RL reward combines binary size reduction and throughput improvement. It uses weighted components for binary size and throughput, commonly represented as alpha times size reward plus beta times throughput reward.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            22
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "reward",
+        "binary size",
+        "throughput",
+        "alpha",
+        "beta"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-006",
+      "question": "What is the Oz optimization sequence used for?",
+      "reference_answer": "Oz is an LLVM optimization sequence aimed at reducing code size, typically more aggressively than Os, though it can trade off execution time.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            1,
+            5,
+            6
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "Oz",
+        "code size",
+        "optimization sequence",
+        "reduce code size"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-007",
+      "question": "What are manual sub-sequences and ODG in POSET-RL?",
+      "reference_answer": "Manual sub-sequences are groups of LLVM optimization passes selected based on functionality, while ODG, or Oz Dependence Graph, represents dependencies among Oz passes and is used to derive sub-sequences for the RL action space.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            2,
+            5,
+            6
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "manual",
+        "sub-sequences",
+        "ODG",
+        "Oz Dependence Graph",
+        "action space"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-008",
+      "question": "What is CompilerGym?",
+      "reference_answer": "CompilerGym is an environment for compiler optimization research that helps users apply machine learning, especially reinforcement learning, to program optimization tasks by providing benchmarks, reward spaces, observation spaces, and action spaces.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            11,
+            12,
+            34,
+            49
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "CompilerGym",
+        "environment",
+        "reinforcement learning",
+        "compiler optimization",
+        "benchmarks"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-009",
+      "question": "What is loop unrolling?",
+      "reference_answer": "Loop unrolling replaces a loop body multiple times according to an unrolling factor, reducing branch overhead and potentially improving instruction-level parallelism, but a poor unrolling factor can hurt performance.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            14,
+            15,
+            16
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "Loop Unrolling",
+        "unrolling factor",
+        "branch",
+        "loop body",
+        "execution time"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-010",
+      "question": "What is register allocation?",
+      "reference_answer": "Register allocation assigns a limited set of processor registers to program variables. It is often modeled using graph coloring and involves handling spilling when registers are insufficient.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            12,
+            13,
+            14
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "Register Allocation",
+        "registers",
+        "variables",
+        "graph coloring",
+        "spilling"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-011",
+      "question": "What is loop distribution?",
+      "reference_answer": "Loop distribution splits one loop into multiple loops while preserving dependencies. It can improve parallelism, vectorization, and cache locality.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            16,
+            17,
+            18
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "Loop Distribution",
+        "parallel",
+        "vectorization",
+        "locality",
+        "dependency graph"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-012",
+      "question": "How are PPO and A2C related to reinforcement learning in the thesis?",
+      "reference_answer": "PPO and A2C are reinforcement learning algorithms discussed as part of the thesis's RL background and algorithm landscape for compiler optimization approaches.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            7,
+            38,
+            39
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "PPO",
+        "A2C",
+        "reinforcement learning",
+        "policy",
+        "algorithm"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-013",
+      "question": "What problem does POSET-RL try to solve?",
+      "reference_answer": "POSET-RL addresses the compiler phase ordering problem by using reinforcement learning to find optimization sequences that improve both code size and execution time in LLVM.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            1,
+            2
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "code size",
+        "execution time",
+        "phase ordering",
+        "reinforcement learning",
+        "LLVM"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-014",
+      "question": "What is the role of LLVM in POSET-RL?",
+      "reference_answer": "LLVM provides the compiler infrastructure used by POSET-RL. Source programs are converted to LLVM IR, optimization passes are applied through LLVM tools, and LLVM-related representations such as IR2Vec are used.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            2,
+            4,
+            7
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "LLVM",
+        "optimizer",
+        "LLVM IR",
+        "opt",
+        "LLVM-10"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-015",
+      "question": "What are the main application areas of ML in compiler optimization?",
+      "reference_answer": "The thesis groups ML applications in compiler optimization into methods for specific optimization problems, general methods to improve compiler optimizations, and frameworks or improvements that support ML use in compilers.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            10,
+            11
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "specific optimization",
+        "general",
+        "improvements",
+        "machine learning techniques",
+        "compilers"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-016",
+      "question": "What is the difference between Q-learning and DQN?",
+      "reference_answer": "Q-learning stores or estimates Q-values for state-action pairs, often using a Q-table in simple cases. DQN extends Q-learning by using a deep neural network to approximate Q-values when the state space is too large for a table.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            3
+          ]
+        },
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            20,
+            38
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "Q-learning",
+        "DQN",
+        "Q-table",
+        "deep neural network",
+        "function approximator"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-017",
+      "question": "What are O0, O1, O2, O3, Os and Oz?",
+      "reference_answer": "O0, O1, O2, O3, Os, and Oz are compiler optimization flags or levels. O0 disables optimizations, O1/O2/O3 generally increase performance-oriented optimizations, while Os and Oz focus on reducing code size.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            1,
+            5
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "O0",
+        "O1",
+        "O2",
+        "O3",
+        "Os"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-018",
+      "question": "What is MLGO?",
+      "reference_answer": "MLGO is a framework for integrating machine learning into LLVM. The thesis describes it as using approaches such as Policy Gradient and Evolution Strategies.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            11,
+            12
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "MLGO",
+        "LLVM",
+        "framework",
+        "Policy Gradient",
+        "Evolution strategies"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-019",
+      "question": "What is the contribution of POSET-RL?",
+      "reference_answer": "POSET-RL contributes a DQN-based RL model for optimization pass sequencing, proposes the Oz Dependence Graph for action-space construction, evaluates on x86 and AArch64 across standard benchmarks, and reports improvements over Oz.",
+      "expected_sources": [
+        {
+          "filename": "sample1.pdf",
+          "pages": [
+            2
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "contributions",
+        "DQN",
+        "ODG",
+        "x86",
+        "AArch64"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    },
+    {
+      "id": "ANS-020",
+      "question": "What limitations or future work are mentioned in the thesis?",
+      "reference_answer": "The thesis future work/limitations section should be answered from the retrieved context; a correct response should mention implementation or environment limitations and suggested improvements only if they are present in the retrieved pages.",
+      "expected_sources": [
+        {
+          "filename": "sample2.pdf",
+          "pages": [
+            44,
+            45,
+            49,
+            50,
+            51
+          ]
+        }
+      ],
+      "must_include_keywords": [
+        "future work",
+        "limitations",
+        "improve",
+        "environment",
+        "implementation"
+      ],
+      "grading_notes": "Mark correct only if the answer is consistent with the reference and grounded in retrieved context."
+    }
+  ]
+}

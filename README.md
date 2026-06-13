@@ -82,7 +82,7 @@ Place your PDF files in the `data/pdf/` folder.
 To process your PDFs and build the search index:
 
 ```bash
-python3 -m app.pipeline
+python3 -m app.pipelines
 ```
 
 Make sure the `execute_indexing_pipeline()` call is uncommented in `pipeline.py`. This will:
@@ -98,7 +98,7 @@ This can take a while depending on how many PDFs you have.
 Once indexing is done, you can query the system:
 
 ```bash
-python3 -m app.pipeline
+python3 -m app.pipelines
 ```
 
 The `execute_query_pipeline()` function will start an interactive loop where you can ask questions. Type your question and press Enter. Type 'exit' when you're done.
