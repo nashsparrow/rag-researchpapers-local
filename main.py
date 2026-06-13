@@ -37,7 +37,7 @@ class CLIApplication:
         elif args.command == "run":
             execute_query_pipeline()
 
-
 if __name__ == "__main__":
-    print("Welcome to Research RAG! \n")
+    print("Welcome to Research RAG!")
+    print("\n")
     CLIApplication().run()

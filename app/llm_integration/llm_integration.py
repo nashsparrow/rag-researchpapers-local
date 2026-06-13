@@ -8,7 +8,7 @@ def build_system_prompt():
         "If the context does not contain relevant information, say you don't know.\n\n"
     )
     prompt += "Keep the answer concise.\n\n"
-    prompt += "Mention source pages when useful."
+    prompt += "For every statement ONLY If the answer is found, cite the file name and the page numbers used at the end of the answer in the format [filename: name , page: 2]."
     return prompt
 
 

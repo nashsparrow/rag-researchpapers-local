@@ -10,7 +10,7 @@ from app.document_retrieval.document_retrieval import (
     retrieve_relevant_chunks,
 )
 from app.helpers.data_classes import FlattenedChunkedJSONFileData
-from app.helpers.helpers import save_json
+from app.helpers.helpers import extract_sources, save_json
 from app.helpers.text_cleanup import clean_text
 from app.llm_integration.llm_integration import send_query_to_llm
 from app.testing_accuracy.rag_testing import (
@@ -82,8 +82,11 @@ def execute_query_pipeline(top_k=3):
         # print("Sources:\n", context_and_sources["sources"])
 
         response = send_query_to_llm(question, context_and_sources["context"])
+        #print(response)
 
         print("LLM Response:\n", response.message.content)
+        # print(extract_sources(context_and_sources["sources"]))
+        print("\n")
 
 
 def execute_test_pipeline():
