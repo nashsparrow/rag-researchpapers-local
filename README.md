@@ -103,6 +103,18 @@ python3 -m app.pipelines
 
 The `execute_query_pipeline()` function will start an interactive loop where you can ask questions. Type your question and press Enter. Type 'exit' when you're done.
 
+### Testing
+Run the indexing pipeline first, then call `test_retrieval_accuracy()` and/or `test_answer_accuracy()` from `execute_test_pipeline()` in `app/pipelines.py`.
+
+```bash
+python3 -m app.pipelines
+```
+
+Retrieval tests use `data/test_files/retrieval_evaluation_questions.json`. Answer tests use `data/test_files/answer_evaluation.json` and require Ollama with `llama3.2`. Results are saved as timestamped reports in `data/test_files/`:
+
+- `retrieval_accuracy_<timestamp>.txt`
+- `answer_accuracy_<timestamp>.txt`
+
 ## What's Happening Behind the Scenes
 
 **Embedding Model**: We use a lightweight but effective model (BAAI/bge-small-en-v1.5) that's specifically tuned for retrieval tasks. It's fast and doesn't need a GPU.
