@@ -58,6 +58,12 @@ python3 main.py run
 
 Enter a question at the prompt, or enter `exit` to stop.
 
+### Sample Questions and Answers
+
+![What is DQN?](docs/images/q1_dqn.png)
+
+![What is DQN?](docs/images/q2_ppo.png)
+
 ## How It Works
 
 The project is organized into several modules that work together:
