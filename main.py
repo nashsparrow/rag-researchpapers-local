@@ -13,9 +13,7 @@ class CLIApplication:
         self.parser = self.build_parser()
 
     def build_parser(self):
-        parser = argparse.ArgumentParser(
-            description="Research Paper RAG Assistant"
-        )
+        parser = argparse.ArgumentParser(description="Research Paper RAG Assistant")
 
         parser.add_argument(
             "command",

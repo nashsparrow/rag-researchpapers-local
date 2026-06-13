@@ -2,10 +2,12 @@ from dataclasses import dataclass, field, asdict
 from typing import List
 import json
 
+
 @dataclass
 class JSONPageData:
     pagenumber: int = None
     text: str = None
+
 
 @dataclass
 class JSONChunkData:
@@ -28,6 +30,7 @@ class JSONFileData:
     def save(self, path: str):
         with open(path, "w", encoding="utf-8") as f:
             json.dump(self.to_dict(), f, indent=2, ensure_ascii=False)
+
 
 @dataclass
 class ChunkedJSONFileData:
@@ -59,6 +62,7 @@ class FlattenedChunkedJSONFileData:
     def save(self, path: str):
         with open(path, "w", encoding="utf-8") as f:
             json.dump(self.to_dict(), f, indent=2, ensure_ascii=False)
+
 
 @dataclass
 class FlattenedChunkedAndEmbeddedJSONFileData:

@@ -1,6 +1,7 @@
 # PDF and processed data directories
 data/pdf/
 data/processed/
+data/test_files/test_results_*.txt
 
 # Python
 __pycache__/

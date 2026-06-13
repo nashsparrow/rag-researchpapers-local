@@ -1,10 +1,4 @@
-
-
-
-from app.document_retrieval.document_retrieval import load_model
-
-
-def create_context(chunks : any):
+def create_context(chunks: any):
     context = ""
     sources = []
 

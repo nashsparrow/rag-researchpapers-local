@@ -26,16 +26,20 @@ def test_retrieval_accuracy(model, index, chunks):
         expected_sources = test.get("expected_sources", [])
         expected_keywords = test.get("expected_keywords", [])
 
-        relevant_chunks = retrieve_relevant_chunks(question, model, index, chunks, top_k=5)
+        relevant_chunks = retrieve_relevant_chunks(
+            question, model, index, chunks, top_k=5
+        )
 
         def chunk_matches_expected_source(chunk, expected_source):
-            return (
-                chunk.get("filename") == expected_source.get("filename")
-                and chunk.get("page_number") in expected_source.get("pages", [])
-            )
+            return chunk.get("filename") == expected_source.get(
+                "filename"
+            ) and chunk.get("page_number") in expected_source.get("pages", [])
 
         def matches_any_expected_source(chunk):
-            return any(chunk_matches_expected_source(chunk, source) for source in expected_sources)
+            return any(
+                chunk_matches_expected_source(chunk, source)
+                for source in expected_sources
+            )
 
         top_1_hit = False
         top_3_hit = False
@@ -43,7 +47,11 @@ def test_retrieval_accuracy(model, index, chunks):
         keyword_hit = False
 
         retrieved_source_hits = []
-        retrieved_text = " ".join(chunk.get("text", "") for chunk in relevant_chunks if isinstance(chunk, dict))
+        retrieved_text = " ".join(
+            chunk.get("text", "")
+            for chunk in relevant_chunks
+            if isinstance(chunk, dict)
+        )
         retrieved_text_lower = retrieved_text.lower()
 
         for idx, chunk in enumerate(relevant_chunks, start=1):
@@ -58,7 +66,9 @@ def test_retrieval_accuracy(model, index, chunks):
             if idx <= 5 and matches_source:
                 top_5_hit = True
 
-            retrieved_source_hits.append((chunk.get("filename"), chunk.get("page_number"), matches_source))
+            retrieved_source_hits.append(
+                (chunk.get("filename"), chunk.get("page_number"), matches_source)
+            )
 
         for keyword in expected_keywords:
             if keyword.lower() in retrieved_text_lower:
@@ -82,14 +92,21 @@ def test_retrieval_accuracy(model, index, chunks):
     if total_questions > 0:
         report_lines.append("=== Overall Retrieval Accuracy ===")
         report_lines.append(f"Questions evaluated: {total_questions}")
-        report_lines.append(f"top_1 accuracy: {overall_top_1_hits / total_questions:.2f}")
-        report_lines.append(f"top_3 accuracy: {overall_top_3_hits / total_questions:.2f}")
-        report_lines.append(f"top_5 accuracy: {overall_top_5_hits / total_questions:.2f}")
-        report_lines.append(f"keyword accuracy: {overall_keyword_hits / total_questions:.2f}")
+        report_lines.append(
+            f"top_1 accuracy: {overall_top_1_hits / total_questions:.2f}"
+        )
+        report_lines.append(
+            f"top_3 accuracy: {overall_top_3_hits / total_questions:.2f}"
+        )
+        report_lines.append(
+            f"top_5 accuracy: {overall_top_5_hits / total_questions:.2f}"
+        )
+        report_lines.append(
+            f"keyword accuracy: {overall_keyword_hits / total_questions:.2f}"
+        )
 
     with open(output_path, "w") as output_file:
         output_file.write("\n".join(report_lines))
-
 
 
 def test_answer_accuracy(model, index, chunks):
@@ -106,10 +123,9 @@ def test_answer_accuracy(model, index, chunks):
     overall_hallucinations = 0
 
     def source_matches_expected(source, expected_source):
-        return (
-            source.get("filename") == expected_source.get("filename")
-            and source.get("page_number") in expected_source.get("pages", [])
-        )
+        return source.get("filename") == expected_source.get("filename") and source.get(
+            "page_number"
+        ) in expected_source.get("pages", [])
 
     def response_content(response):
         message = getattr(response, "message", None)
@@ -144,7 +160,9 @@ def test_answer_accuracy(model, index, chunks):
         expected_sources = test.get("expected_sources", [])
         required_keywords = test.get("must_include_keywords", [])
 
-        relevant_chunks = retrieve_relevant_chunks(question, model, index, chunks, top_k=5)
+        relevant_chunks = retrieve_relevant_chunks(
+            question, model, index, chunks, top_k=5
+        )
         context_and_sources = create_context(relevant_chunks)
         response = send_query_to_llm(question, context_and_sources["context"])
         answer = response_content(response)
@@ -155,16 +173,22 @@ def test_answer_accuracy(model, index, chunks):
             keyword for keyword in required_keywords if keyword.lower() in answer_lower
         ]
         unsupported_keywords = [
-            keyword for keyword in matched_keywords if keyword.lower() not in context_lower
+            keyword
+            for keyword in matched_keywords
+            if keyword.lower() not in context_lower
         ]
 
-        answer_correct = bool(required_keywords) and len(matched_keywords) == len(required_keywords)
+        answer_correct = bool(required_keywords) and len(matched_keywords) == len(
+            required_keywords
+        )
         expected_source_retrieved = any(
             source_matches_expected(source, expected_source)
             for source in context_and_sources["sources"]
             for expected_source in expected_sources
         )
-        grounded = answer_correct and expected_source_retrieved and not unsupported_keywords
+        grounded = (
+            answer_correct and expected_source_retrieved and not unsupported_keywords
+        )
         citation_correct = cites_expected_source(answer, expected_sources)
         hallucination = bool(unsupported_keywords)
 
@@ -187,10 +211,18 @@ def test_answer_accuracy(model, index, chunks):
     if total_questions > 0:
         report_lines.append("=== Overall Answer Accuracy ===")
         report_lines.append(f"Questions evaluated: {total_questions}")
-        report_lines.append(f"answer accuracy: {overall_correct_answers / total_questions:.2f}")
-        report_lines.append(f"grounded accuracy: {overall_grounded_answers / total_questions:.2f}")
-        report_lines.append(f"citation accuracy: {overall_correct_citations / total_questions:.2f}")
-        report_lines.append(f"hallucination rate: {overall_hallucinations / total_questions:.2f}")
+        report_lines.append(
+            f"answer accuracy: {overall_correct_answers / total_questions:.2f}"
+        )
+        report_lines.append(
+            f"grounded accuracy: {overall_grounded_answers / total_questions:.2f}"
+        )
+        report_lines.append(
+            f"citation accuracy: {overall_correct_citations / total_questions:.2f}"
+        )
+        report_lines.append(
+            f"hallucination rate: {overall_hallucinations / total_questions:.2f}"
+        )
 
     with open(output_path, "w") as output_file:
         output_file.write("\n".join(report_lines))
