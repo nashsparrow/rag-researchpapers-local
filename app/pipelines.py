@@ -15,6 +15,7 @@ from app.helpers.text_cleanup import clean_text
 from app.llm_integration.llm_integration import send_query_to_llm
 from app.testing_accuracy.rag_testing import (
     test_answer_accuracy,
+    test_recall_accuracy,
     test_retrieval_accuracy,
 )
 from config import CHUNK_SIZE
@@ -88,6 +89,19 @@ def execute_query_pipeline(top_k=3):
         # print(extract_sources(context_and_sources["sources"]))
         print("\n")
 
+def exeute_recall_at_tests():
+    # should run after the indexing pipeline is executed.
+    print("Starting Recall@ Tests..")
+    model, index, chunks = load_model()
+
+    chunk_sizes = [1, 3, 5, 7]
+    
+    for i in chunk_sizes:
+        print(f"Running Recall@ {i} Tests..")
+        test_recall_accuracy(model, index, chunks, top_k=i)
+        print(f"Recall@ {i} Test Completed")
+
+    print(f"Recall@ Tests Completed")
 
 def execute_test_pipeline():
     # should run after the indexing pipeline is executed.

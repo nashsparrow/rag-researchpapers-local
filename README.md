@@ -2,6 +2,21 @@
 
 This is a Retrieval Augmented Generation (RAG) system that helps you ask questions about compiler optimization research papers and LLVM documentation. Instead of reading through PDFs manually, you can ask a question and the system will find the relevant parts of your documents and generate an answer using an AI model.
 
+## Evaluation
+
+The evaluation measures how effectively the RAG system retrieves relevant source content for the test questions.
+
+### Recall@K Evaluation
+
+Recall@K is the percentage of questions for which a relevant source appears within the top K retrieved chunks.
+
+| K | Recall@K |
+|---:|---------:|
+| 1 | 27% |
+| 3 | 43% |
+| 5 | 52% |
+| 7 | 52% |
+
 ## Development Notes
 Implemented the full pipeline manually: PDF parsing, chunking, embedding generation, FAISS indexing, retrieval, answer generation, and evaluation scripts.
 
@@ -58,7 +73,7 @@ python3 main.py run
 
 Enter a question at the prompt, or enter `exit` to stop.
 
-### Sample Questions and Answers
+Sample Questions and Answers
 
 ![What is DQN?](docs/images/q1_dqn.png)
 

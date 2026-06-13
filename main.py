@@ -4,6 +4,7 @@ from app.pipelines import (
     execute_indexing_pipeline,
     execute_query_pipeline,
     execute_test_pipeline,
+    exeute_recall_at_tests,
 )
 from config import PDF_DATA_PATH, PROCESSED_DATA_PATH
 
@@ -17,7 +18,7 @@ class CLIApplication:
 
         parser.add_argument(
             "command",
-            choices=["index", "test", "run"],
+            choices=["index", "test", "run","recalltest"],
         )
 
         return parser
@@ -33,6 +34,9 @@ class CLIApplication:
 
         elif args.command == "test":
             execute_test_pipeline()
+
+        elif args.command == "recalltest":
+            exeute_recall_at_tests()
 
         elif args.command == "run":
             execute_query_pipeline()

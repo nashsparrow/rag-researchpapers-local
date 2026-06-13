@@ -2,6 +2,7 @@
 data/pdf/
 data/processed/
 data/test_files/test_results_*.txt
+data/text_files/recall/*.txt
 
 # Python
 __pycache__/

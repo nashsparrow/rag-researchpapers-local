@@ -5,7 +5,7 @@ from datetime import datetime
 from app.context_creator.context_creator import create_context
 from app.document_retrieval.document_retrieval import retrieve_relevant_chunks
 from app.llm_integration.llm_integration import send_query_to_llm
-from config import TEST_DATA_PATH
+from config import RECALL_TEST_DATA_PATH, TEST_DATA_PATH
 
 
 def test_retrieval_accuracy(model, index, chunks):
@@ -27,7 +27,7 @@ def test_retrieval_accuracy(model, index, chunks):
         expected_keywords = test.get("expected_keywords", [])
 
         relevant_chunks = retrieve_relevant_chunks(
-            question, model, index, chunks, top_k=5
+            question, model, index, chunks, top_k=3
         )
 
         def chunk_matches_expected_source(chunk, expected_source):
@@ -226,3 +226,35 @@ def test_answer_accuracy(model, index, chunks):
 
     with open(output_path, "w") as output_file:
         output_file.write("\n".join(report_lines))
+
+def test_recall_accuracy(model, index, chunks, top_k):
+    with open(f"{RECALL_TEST_DATA_PATH}recall_evaluation.json", "r") as f:
+        test_file = json.load(f)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    output_path = f"{RECALL_TEST_DATA_PATH}recall_test_result_size_{top_k}_{timestamp}.txt"
+    report_lines = []
+    total_items = len(test_file.get("data", []))
+    correct_items = 0
+
+    for test in test_file["data"]:
+        question = test["question"]
+        expected_chunk_id = test.get("expected_chunk_id")
+
+        relevant_chunks = retrieve_relevant_chunks(
+            question, model, index, chunks, top_k
+        )
+
+        for relevant_chunk in relevant_chunks:
+            if (expected_chunk_id == relevant_chunk["chunk_id"]):
+                correct_items += 1
+
+    report_lines.append(f"Recall@: {top_k}")
+    report_lines.append(f"correct items: {correct_items}")
+    report_lines.append(f"total items: {total_items}")
+    report_lines.append(f"Accuracy: {correct_items / total_items}")
+
+    with open(output_path, "w") as output_file:
+        output_file.write("\n".join(report_lines))
+
+
