@@ -2,6 +2,9 @@
 
 This is a Retrieval Augmented Generation (RAG) system that helps you ask questions about compiler optimization research papers and LLVM documentation. Instead of reading through PDFs manually, you can ask a question and the system will find the relevant parts of your documents and generate an answer using an AI model.
 
+## Development Notes
+Implemented the full pipeline manually: PDF parsing, chunking, embedding generation, FAISS indexing, retrieval, answer generation, and evaluation scripts.
+
 ## Prerequisites
 
 - Python 3
@@ -54,7 +57,7 @@ Enter a question at the prompt, or enter `exit` to stop.
 The project is organized into several modules that work together:
 
 ```
-rag-researchpapers-azure/
+rag-researchpapers-local/
 ├── app/
 │   ├── document_ingestion/          # Loads PDFs from disk
 │   │   └── document_loader.py
@@ -115,21 +118,3 @@ When you ask a question:
 **Vector Search**: FAISS uses inner product search with L2-normalized embeddings to find the most relevant chunks. It's super fast even with thousands of chunks.
 
 **Local AI**: The system uses Ollama with llama3.2 running locally on your machine. No data is sent to external APIs—everything stays on your computer.
-
-## Recent Improvements
-
-- **Fixed embedding issues** — Ensured embeddings always have the right shape for FAISS
-- **Lazy loading** — Models are only loaded when needed, not on startup
-- **Better message format** — Fixed how questions and context are sent to the LLM
-- **Relevance scores** — Retrieved chunks now include their similarity scores
-- **Proper response parsing** — We extract just the answer from the LLM's response
-- **Context integration** — Context and questions are properly formatted for the LLM
-
-## Ideas for the Future
-
-- Support more document formats (Word, HTML, etc.)
-- Train the embeddings model specifically on compiler papers
-- Filter results by date, author, or keywords
-- Build a web interface so you don't need the command line
-- Remember conversation history across multiple questions
-- Show exactly where in the PDF each answer came from 
