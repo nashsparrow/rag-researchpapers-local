@@ -89,6 +89,18 @@ rag-researchpapers-local/
 └── README.md
 ```
 
+### Indexing Pipeline
+
+Loads PDF documents, cleans and splits their text into chunks, creates embeddings, and stores the vectors in a FAISS index with their source metadata.
+
+![](docs/images/indexing_pipeline.png)
+
+### Querying Pipeline
+
+Embeds the user's question, retrieves the most relevant chunks from FAISS, builds a source-aware context, and sends it to Ollama to generate an answer.
+
+![](docs/images/queryin_pipeline.png)
+
 ## What Happens When You Index Your Documents
 
 Here's the step-by-step process:
