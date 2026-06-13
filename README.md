@@ -2,6 +2,53 @@
 
 This is a Retrieval Augmented Generation (RAG) system that helps you ask questions about compiler optimization research papers and LLVM documentation. Instead of reading through PDFs manually, you can ask a question and the system will find the relevant parts of your documents and generate an answer using an AI model.
 
+## Prerequisites
+
+- Python 3
+- Ollama with the `llama3.2` model
+- Python packages: `pymupdf`, `sentence-transformers`, `faiss-cpu`, `ollama`, and `ftfy`
+
+Start Ollama and download the model before running answer tests or asking questions:
+
+```bash
+ollama pull llama3.2
+```
+
+## How to Run Locally
+
+1. Set the PDF folder in `config.py`. The default is:
+
+```python
+PDF_DATA_PATH = "data/pdf/"
+```
+
+2. Add the PDF files to that folder.
+
+3. Process the PDFs and build the search index:
+
+```bash
+python3 main.py index
+```
+
+4. Run retrieval and answer accuracy tests:
+
+```bash
+python3 main.py test
+```
+
+Test reports are saved in `data/test_files/` as:
+
+- `retrieval_accuracy_<timestamp>.txt`
+- `answer_accuracy_<timestamp>.txt`
+
+5. Start the interactive question prompt:
+
+```bash
+python3 main.py run
+```
+
+Enter a question at the prompt, or enter `exit` to stop.
+
 ## How It Works
 
 The project is organized into several modules that work together:
@@ -61,60 +108,6 @@ When you ask a question:
 6. The LLM reads the context and generates an answer
 7. You get a concise response with source attribution
 
-## Setup
-
-First, update `config.py` if you want to change defaults:
-
-```python
-MODEL_NAME = "BAAI/bge-small-en-v1.5"      # Which embedding model to use
-NORMALIZE_EMBEDDINGS = True                 # Keep this on for better results
-PROCESSED_DATA_PATH = "data/processed/"     # Where to save indexes
-PDF_DATA_PATH = "data/pdf/"                 # Where your PDFs go
-CHUNK_SIZE = 500                            # How big each chunk is (characters)
-```
-
-## Getting Started
-
-### Step 1: Add Your Documents
-Place your PDF files in the `data/pdf/` folder.
-
-### Step 2: Build the Index
-To process your PDFs and build the search index:
-
-```bash
-python3 -m app.pipelines
-```
-
-Make sure the `execute_indexing_pipeline()` call is uncommented in `pipeline.py`. This will:
-- Read all your PDFs
-- Clean and chunk the text
-- Create embeddings
-- Build the search index
-- Save everything for later use
-
-This can take a while depending on how many PDFs you have.
-
-### Step 3: Start Asking Questions
-Once indexing is done, you can query the system:
-
-```bash
-python3 -m app.pipelines
-```
-
-The `execute_query_pipeline()` function will start an interactive loop where you can ask questions. Type your question and press Enter. Type 'exit' when you're done.
-
-### Testing
-Run the indexing pipeline first, then call `test_retrieval_accuracy()` and/or `test_answer_accuracy()` from `execute_test_pipeline()` in `app/pipelines.py`.
-
-```bash
-python3 -m app.pipelines
-```
-
-Retrieval tests use `data/test_files/retrieval_evaluation_questions.json`. Answer tests use `data/test_files/answer_evaluation.json` and require Ollama with `llama3.2`. Results are saved as timestamped reports in `data/test_files/`:
-
-- `retrieval_accuracy_<timestamp>.txt`
-- `answer_accuracy_<timestamp>.txt`
-
 ## What's Happening Behind the Scenes
 
 **Embedding Model**: We use a lightweight but effective model (BAAI/bge-small-en-v1.5) that's specifically tuned for retrieval tasks. It's fast and doesn't need a GPU.
@@ -131,15 +124,6 @@ Retrieval tests use `data/test_files/retrieval_evaluation_questions.json`. Answe
 - **Relevance scores** — Retrieved chunks now include their similarity scores
 - **Proper response parsing** — We extract just the answer from the LLM's response
 - **Context integration** — Context and questions are properly formatted for the LLM
-
-## You'll Need These
-
-- **pymupdf** — For reading PDFs
-- **sentence-transformers** — For creating embeddings
-- **faiss-cpu** — For fast similarity search
-- **ollama** — For running the LLM locally
-- **ftfy** — For fixing text encoding issues
-- Plus a few others for utilities and data handling
 
 ## Ideas for the Future
 

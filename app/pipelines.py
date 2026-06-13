@@ -90,12 +90,3 @@ def execute_test_pipeline():
      test_answer_accuracy(model, index, chunks)
      print("Answer Accuray Tests completed.")
 
-
-
-
-## when indexing pipeline is executed.
-# ##execute_indexing_pipeline(pdf_path=PDF_DATA_PATH, txt_path=PROCESSED_DATA_PATH)
-
-## to query the indexed data
-execute_test_pipeline()
-#print (execute_query_pipeline())

@@ -1,0 +1,126 @@
+Question: What is DQN?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [3]}, {'filename': 'sample2.pdf', 'pages': [20, 38]}]
+Retrieved Chunks: [('sample2.pdf', 20, True), ('sample1.pdf', 3, True), ('sample2.pdf', 20, True), ('sample1.pdf', 3, True), ('sample2.pdf', 38, True)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['Deep Q', 'Q-learning', 'neural network', 'Q-table', 'Q-function']
+
+Question: What is the phase ordering problem?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [1, 2]}, {'filename': 'sample2.pdf', 'pages': [8, 19]}]
+Retrieved Chunks: [('sample1.pdf', 1, True), ('sample2.pdf', 19, True), ('sample1.pdf', 1, True), ('sample2.pdf', 34, False), ('sample2.pdf', 8, True)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['phase ordering', 'optimization passes', 'sequence', 'compiler optimization']
+
+Question: Which benchmarks were used in POSET-RL?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [1, 2, 7, 8]}]
+Retrieved Chunks: [('sample2.pdf', 50, False), ('sample1.pdf', 1, True), ('sample1.pdf', 1, True), ('sample2.pdf', 9, False), ('sample2.pdf', 14, False)]
+top_1_hit: False, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['SPEC', 'MiBench', 'SPEC CPU 2006', 'SPEC CPU 2017', 'x86', 'AArch64']
+
+Question: How does POSET-RL use IR2Vec?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [2, 3, 4]}, {'filename': 'sample2.pdf', 'pages': [20]}]
+Retrieved Chunks: [('sample1.pdf', 3, True), ('sample1.pdf', 3, True), ('sample1.pdf', 4, True), ('sample1.pdf', 2, True), ('sample1.pdf', 4, True)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['IR2Vec', 'representations', 'embeddings', 'state', 'LLVM IR']
+
+Question: How is the reward function defined in POSET-RL?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [4, 5, 7]}, {'filename': 'sample2.pdf', 'pages': [22]}]
+Retrieved Chunks: [('sample2.pdf', 37, False), ('sample2.pdf', 22, True), ('sample1.pdf', 4, True), ('sample2.pdf', 20, False), ('sample2.pdf', 37, False)]
+top_1_hit: False, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['reward', 'binary size', 'throughput', 'alpha', 'beta', 'code size']
+
+Question: What is the Oz optimization sequence used for?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [1, 5, 6]}]
+Retrieved Chunks: [('sample1.pdf', 5, True), ('sample1.pdf', 5, True), ('sample1.pdf', 5, True), ('sample1.pdf', 10, False), ('sample1.pdf', 5, True)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['Oz', 'code size', 'optimization sequence', 'reduce code size']
+
+Question: What are manual sub-sequences and ODG in POSET-RL?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [2, 5, 6]}]
+Retrieved Chunks: [('sample1.pdf', 5, True), ('sample2.pdf', 22, False), ('sample1.pdf', 6, True), ('sample1.pdf', 9, False), ('sample1.pdf', 8, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['manual', 'sub-sequences', 'ODG', 'Oz Dependence Graph', 'action space']
+
+Question: What is CompilerGym?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [11, 12, 34, 49]}]
+Retrieved Chunks: [('sample2.pdf', 12, True), ('sample2.pdf', 4, False), ('sample2.pdf', 49, True), ('sample2.pdf', 26, False), ('sample2.pdf', 4, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['CompilerGym', 'environment', 'reinforcement learning', 'compiler optimization', 'benchmarks']
+
+Question: What is loop unrolling?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [14, 15, 16]}]
+Retrieved Chunks: [('sample2.pdf', 14, True), ('sample2.pdf', 14, True), ('sample2.pdf', 14, True), ('sample2.pdf', 19, False), ('sample2.pdf', 16, True)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['Loop Unrolling', 'unrolling factor', 'branch', 'loop body', 'execution time']
+
+Question: What is register allocation?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [12, 13, 14]}]
+Retrieved Chunks: [('sample2.pdf', 12, True), ('sample2.pdf', 14, True), ('sample2.pdf', 13, True), ('sample2.pdf', 14, True), ('sample2.pdf', 12, True)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['Register Allocation', 'registers', 'variables', 'graph coloring', 'spilling']
+
+Question: What is loop distribution?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [16, 17, 18]}]
+Retrieved Chunks: [('sample2.pdf', 16, True), ('sample2.pdf', 16, True), ('sample2.pdf', 19, False), ('sample2.pdf', 32, False), ('sample1.pdf', 5, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['Loop Distribution', 'parallel', 'vectorization', 'locality', 'dependency graph']
+
+Question: How are PPO and A2C related to reinforcement learning in the thesis?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [7, 38, 39]}]
+Retrieved Chunks: [('sample2.pdf', 39, True), ('sample2.pdf', 38, True), ('sample2.pdf', 39, True), ('sample1.pdf', 3, False), ('sample2.pdf', 48, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['PPO', 'A2C', 'reinforcement learning', 'policy', 'algorithm']
+
+Question: What problem does POSET-RL try to solve?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [1, 2]}]
+Retrieved Chunks: [('sample1.pdf', 1, True), ('sample2.pdf', 50, False), ('sample2.pdf', 34, False), ('sample1.pdf', 1, True), ('sample2.pdf', 22, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['code size', 'execution time', 'phase ordering', 'reinforcement learning', 'LLVM']
+
+Question: What is the role of LLVM in POSET-RL?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [2, 4, 7]}]
+Retrieved Chunks: [('sample1.pdf', 10, False), ('sample2.pdf', 23, False), ('sample1.pdf', 4, True), ('sample2.pdf', 14, False), ('sample1.pdf', 4, True)]
+top_1_hit: False, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['LLVM', 'optimizer', 'LLVM IR', 'opt', 'LLVM-10']
+
+Question: What are the main application areas of ML in compiler optimization?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [10, 11]}]
+Retrieved Chunks: [('sample2.pdf', 10, True), ('sample2.pdf', 11, True), ('sample2.pdf', 6, False), ('sample2.pdf', 2, False), ('sample2.pdf', 1, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['specific optimization', 'general', 'improvements', 'machine learning techniques', 'compilers']
+
+Question: What is the difference between Q-learning and DQN?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [3]}, {'filename': 'sample2.pdf', 'pages': [20, 38]}]
+Retrieved Chunks: [('sample2.pdf', 20, True), ('sample2.pdf', 38, True), ('sample1.pdf', 3, True), ('sample2.pdf', 20, True), ('sample1.pdf', 3, True)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['Q-learning', 'DQN', 'Q-table', 'deep neural network', 'function approximator']
+
+Question: What are O0, O1, O2, O3, Os and Oz?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [1, 5]}]
+Retrieved Chunks: [('sample1.pdf', 5, True), ('sample1.pdf', 1, True), ('sample1.pdf', 1, True), ('sample1.pdf', 7, False), ('sample1.pdf', 6, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['O0', 'O1', 'O2', 'O3', 'Os', 'Oz', 'optimization flags']
+
+Question: What is MLGO?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [11, 12]}]
+Retrieved Chunks: [('sample2.pdf', 12, True), ('sample2.pdf', 49, False), ('sample2.pdf', 48, False), ('sample2.pdf', 49, False), ('sample2.pdf', 34, False)]
+top_1_hit: True, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['MLGO', 'LLVM', 'framework', 'Policy Gradient', 'Evolution strategies']
+
+Question: What is the contribution of POSET-RL?
+Expected Sources: [{'filename': 'sample1.pdf', 'pages': [2]}]
+Retrieved Chunks: [('sample1.pdf', 1, False), ('sample1.pdf', 10, False), ('sample2.pdf', 50, False), ('sample1.pdf', 1, False), ('sample2.pdf', 41, False)]
+top_1_hit: False, top_3_hit: False, top_5_hit: False, keyword_hit: False
+Expected Keywords: ['contributions', 'DQN', 'ODG', 'x86', 'AArch64', 'benchmarks', 'Oz']
+
+Question: What limitations or future work are mentioned in the thesis?
+Expected Sources: [{'filename': 'sample2.pdf', 'pages': [44, 45, 49, 50, 51]}]
+Retrieved Chunks: [('sample2.pdf', 6, False), ('sample2.pdf', 44, True), ('sample2.pdf', 3, False), ('sample1.pdf', 2, False), ('sample2.pdf', 6, False)]
+top_1_hit: False, top_3_hit: True, top_5_hit: True, keyword_hit: True
+Expected Keywords: ['future work', 'limitations', 'improve', 'environment', 'implementation']
+
+=== Overall Retrieval Accuracy ===
+Questions evaluated: 20
+top_1 accuracy: 0.75
+top_3 accuracy: 0.95
+top_5 accuracy: 0.95
+keyword accuracy: 0.95
